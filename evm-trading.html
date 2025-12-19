@@ -270,12 +270,76 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script>
-        function connectWallet() {
-            alert('Wallet connection - Integrate Web3.js for MetaMask');
+        let web3;
+        let currentAccount;
+
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    currentAccount = accounts[0];
+
+                    // Initialize Web3
+                    web3 = new Web3(window.ethereum);
+
+                    // Get network
+                    const chainId = await web3.eth.getChainId();
+
+                    // Update button
+                    const walletBtn = document.querySelector('.wallet-btn');
+                    walletBtn.textContent = `${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`;
+                    walletBtn.style.background = '#00ff88';
+                    walletBtn.style.color = '#0a0a0a';
+
+                    console.log('Connected to:', currentAccount);
+                    console.log('Chain ID:', chainId);
+
+                    // Listen for account changes
+                    window.ethereum.on('accountsChanged', handleAccountsChanged);
+                    window.ethereum.on('chainChanged', () => window.location.reload());
+
+                } catch (error) {
+                    console.error('Error connecting wallet:', error);
+                    alert('Failed to connect wallet: ' + error.message);
+                }
+            } else {
+                alert('MetaMask not detected! Please install MetaMask extension.');
+                window.open('https://metamask.io/download/', '_blank');
+            }
         }
-        function performSwap() {
-            alert('Swap executed - Connect to EVM backend');
+
+        function handleAccountsChanged(accounts) {
+            if (accounts.length === 0) {
+                console.log('Please connect to MetaMask.');
+                location.reload();
+            } else if (accounts[0] !== currentAccount) {
+                currentAccount = accounts[0];
+                location.reload();
+            }
+        }
+
+        async function performSwap() {
+            if (!currentAccount) {
+                alert('Please connect your wallet first!');
+                return;
+            }
+
+            // Get input values
+            const fromToken = document.querySelectorAll('.token-select')[0].value;
+            const toToken = document.querySelectorAll('.token-select')[1].value;
+            const amount = document.querySelectorAll('.amount-input')[0].value;
+
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            alert(`Swap Preview:\nFrom: ${amount} ${fromToken}\nTo: ${toToken}\n\n(Demo mode - Connect to DEX smart contract to execute real swaps)`);
+
+            console.log('Swap details:', { fromToken, toToken, amount, account: currentAccount });
         }
     </script>
 </body>
