@@ -1782,19 +1782,33 @@
             // Close dropdown
             document.getElementById('languageDropdown').classList.remove('active');
 
+            console.log(`🌐 Attempting to translate to: ${displayCode} (${langCode})`);
+
             // Wait for Google Translate to load, then change language
+            let attempts = 0;
             const checkAndTranslate = setInterval(() => {
+                attempts++;
                 const selectElement = document.querySelector('.goog-te-combo');
+
                 if (selectElement) {
                     clearInterval(checkAndTranslate);
                     selectElement.value = langCode;
                     selectElement.dispatchEvent(new Event('change'));
                     console.log(`✅ Page translated to: ${displayCode} (${langCode})`);
+
+                    // Force page translation
+                    setTimeout(() => {
+                        const frame = document.querySelector('.goog-te-menu-frame');
+                        if (!frame) {
+                            console.log('⚠️ Translation frame not found, page should still translate');
+                        }
+                    }, 1000);
+                } else if (attempts > 50) {
+                    clearInterval(checkAndTranslate);
+                    console.error('❌ Google Translate not loaded. Please refresh the page.');
+                    alert('Translation service is loading. Please wait a moment and try again.');
                 }
             }, 100);
-
-            // Stop checking after 5 seconds
-            setTimeout(() => clearInterval(checkAndTranslate), 5000);
         }
 
         // Close language dropdown when clicking outside
