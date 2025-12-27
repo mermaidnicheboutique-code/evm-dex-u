@@ -1520,7 +1520,7 @@
     </footer>
 
     <!-- Google Translate Hidden Element -->
-    <div id="google_translate_element"></div>
+    <div id="google_translate_element" style="display: none;"></div>
 
     <!-- Load Google Translate Script -->
     <script type="text/javascript">
@@ -1528,12 +1528,13 @@
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 includedLanguages: 'en,es,zh-CN,ja,ko,de,fr,pt',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
+
+            console.log('✅ Google Translate initialized');
         }
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
         // Create floating particles
@@ -1771,6 +1772,8 @@
         }
 
         function changeLanguage(langCode, displayCode) {
+            console.log(`🌐 Changing language to: ${displayCode} (${langCode})`);
+
             // Update current language display
             document.getElementById('currentLang').textContent = displayCode;
 
@@ -1782,33 +1785,52 @@
             // Close dropdown
             document.getElementById('languageDropdown').classList.remove('active');
 
-            console.log(`🌐 Attempting to translate to: ${displayCode} (${langCode})`);
-
-            // Wait for Google Translate to load, then change language
-            let attempts = 0;
-            const checkAndTranslate = setInterval(() => {
-                attempts++;
-                const selectElement = document.querySelector('.goog-te-combo');
+            // Method 1: Try to find and trigger the Google Translate dropdown
+            const triggerTranslation = () => {
+                const selectElement = document.querySelector('select.goog-te-combo');
 
                 if (selectElement) {
-                    clearInterval(checkAndTranslate);
+                    console.log('✅ Found Google Translate selector');
                     selectElement.value = langCode;
-                    selectElement.dispatchEvent(new Event('change'));
-                    console.log(`✅ Page translated to: ${displayCode} (${langCode})`);
 
-                    // Force page translation
+                    // Trigger change event multiple ways to ensure it works
+                    selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+                    selectElement.dispatchEvent(new Event('input', { bubbles: true }));
+
+                    // Directly call Google Translate if available
+                    if (window.google && window.google.translate) {
+                        console.log('✅ Triggering Google Translate');
+                    }
+
                     setTimeout(() => {
-                        const frame = document.querySelector('.goog-te-menu-frame');
-                        if (!frame) {
-                            console.log('⚠️ Translation frame not found, page should still translate');
-                        }
-                    }, 1000);
-                } else if (attempts > 50) {
-                    clearInterval(checkAndTranslate);
-                    console.error('❌ Google Translate not loaded. Please refresh the page.');
-                    alert('Translation service is loading. Please wait a moment and try again.');
+                        console.log(`✅ Translation to ${displayCode} triggered`);
+                    }, 500);
+
+                    return true;
                 }
-            }, 100);
+                return false;
+            };
+
+            // Try immediately
+            if (!triggerTranslation()) {
+                // Wait for Google Translate to be ready
+                let attempts = 0;
+                const waitForTranslate = setInterval(() => {
+                    attempts++;
+
+                    if (triggerTranslation()) {
+                        clearInterval(waitForTranslate);
+                    } else if (attempts > 30) {
+                        clearInterval(waitForTranslate);
+                        console.error('❌ Could not activate Google Translate');
+
+                        // Fallback: reload with language parameter
+                        const url = window.location.href.split('#')[0];
+                        window.location.href = url + '#googtrans(en|' + langCode + ')';
+                        window.location.reload();
+                    }
+                }, 200);
+            }
         }
 
         // Close language dropdown when clicking outside
