@@ -21,15 +21,45 @@
             overflow-x: hidden;
         }
 
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            filter: blur(2px) brightness(0.5);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(180deg, rgba(13, 17, 23, 0.7) 0%, rgba(13, 17, 23, 0.95) 100%);
+            z-index: -1;
+        }
+
         /* Header */
         .header {
-            background: rgba(22, 27, 34, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #30363D;
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(41, 121, 255, 0.2);
             padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
         }
 
         .header-container {
@@ -59,6 +89,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
+            box-shadow: 0 4px 12px rgba(41, 121, 255, 0.4);
         }
 
         .nav {
@@ -76,32 +107,83 @@
         }
 
         .nav-link:hover {
-            color: #F0F6FC;
+            color: #2979FF;
         }
 
         .connect-btn {
-            background: #2979FF;
+            background: linear-gradient(135deg, #2979FF 0%, #1E5FD9 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(41, 121, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .connect-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .connect-btn:hover:before {
+            left: 100%;
         }
 
         .connect-btn:hover {
-            background: #60A5FF;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(41, 121, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 121, 255, 0.5);
+        }
+
+        .connect-btn.connected {
+            background: #10B981;
         }
 
         /* Hero Section */
         .hero {
             position: relative;
-            padding: 120px 24px 80px;
+            padding: 140px 24px 100px;
             overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #2979FF;
+            border-radius: 50%;
+            animation: float-particle 20s infinite;
+            opacity: 0.6;
+            box-shadow: 0 0 10px #2979FF;
+        }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
         }
 
         .hero-background {
@@ -110,7 +192,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(41, 121, 255, 0.15) 0%, transparent 50%);
+            background: radial-gradient(circle at 50% 0%, rgba(41, 121, 255, 0.2) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -121,11 +203,17 @@
             right: 0;
             bottom: 0;
             background-image:
-                linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+                linear-gradient(rgba(41, 121, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(41, 121, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
-            opacity: 0.3;
+            opacity: 0.2;
             pointer-events: none;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
         }
 
         .hero-container {
@@ -137,7 +225,7 @@
         }
 
         .hero-title {
-            font-size: 64px;
+            font-size: 72px;
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 24px;
@@ -145,6 +233,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: glow-title 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-title {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(41, 121, 255, 0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(41, 121, 255, 0.6)); }
         }
 
         .hero-title .highlight {
@@ -152,6 +246,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            display: inline-block;
         }
 
         .hero-subtitle {
@@ -172,50 +268,73 @@
         }
 
         .btn-primary {
-            background: #2979FF;
+            background: linear-gradient(135deg, #2979FF 0%, #1E5FD9 100%);
             color: white;
             border: none;
-            padding: 16px 32px;
+            padding: 18px 36px;
             border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 8px 24px rgba(41, 121, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover:before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary:hover {
-            background: #60A5FF;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(41, 121, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(41, 121, 255, 0.6);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: #F0F6FC;
-            border: 1px solid #30363D;
-            padding: 16px 32px;
+            background: rgba(41, 121, 255, 0.1);
+            color: #2979FF;
+            border: 1px solid rgba(41, 121, 255, 0.3);
+            padding: 18px 36px;
             border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
         }
 
         .btn-secondary:hover {
             border-color: #2979FF;
-            background: rgba(41, 121, 255, 0.1);
+            background: rgba(41, 121, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         /* Stats Section */
         .stats {
-            padding: 60px 24px;
-            background: #161B22;
-            border-top: 1px solid #30363D;
-            border-bottom: 1px solid #30363D;
+            padding: 80px 24px;
+            background: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(41, 121, 255, 0.2);
+            border-bottom: 1px solid rgba(41, 121, 255, 0.2);
+            position: relative;
         }
 
         .stats-container {
@@ -228,19 +347,44 @@
 
         .stat-card {
             text-align: center;
-            padding: 24px;
+            padding: 32px;
             background: rgba(41, 121, 255, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(41, 121, 255, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(41, 121, 255, 0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(41, 121, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .stat-card:hover:before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: #2979FF;
+            box-shadow: 0 12px 32px rgba(41, 121, 255, 0.3);
         }
 
         .stat-icon {
-            font-size: 40px;
+            font-size: 48px;
             margin-bottom: 16px;
+            filter: drop-shadow(0 4px 12px rgba(41, 121, 255, 0.4));
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
             color: #F0F6FC;
             margin-bottom: 8px;
@@ -261,7 +405,8 @@
 
         /* Features Section */
         .features {
-            padding: 100px 24px;
+            padding: 120px 24px;
+            position: relative;
         }
 
         .features-container {
@@ -271,7 +416,7 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
         .section-title {
@@ -289,38 +434,58 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 32px;
         }
 
         .feature-card {
-            background: #161B22;
-            border: 1px solid #30363D;
+            background: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(41, 121, 255, 0.2);
             border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s;
+            padding: 36px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(41, 121, 255, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover:before {
+            opacity: 1;
         }
 
         .feature-card:hover {
             border-color: #2979FF;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(41, 121, 255, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(41, 121, 255, 0.3);
         }
 
         .feature-icon {
-            width: 56px;
-            height: 56px;
+            width: 64px;
+            height: 64px;
             background: linear-gradient(135deg, #2979FF 0%, #1E5FD9 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(41, 121, 255, 0.4);
         }
 
         .feature-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
             margin-bottom: 12px;
             color: #F0F6FC;
@@ -334,14 +499,14 @@
 
         .feature-list {
             list-style: none;
-            margin-top: 16px;
+            margin-top: 20px;
         }
 
         .feature-list li {
             font-size: 13px;
             color: #8B949E;
-            padding: 6px 0;
-            padding-left: 24px;
+            padding: 8px 0;
+            padding-left: 28px;
             position: relative;
         }
 
@@ -351,14 +516,128 @@
             left: 0;
             color: #2979FF;
             font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Wallet Modal */
+        .wallet-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .wallet-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #161B22;
+            border: 1px solid rgba(41, 121, 255, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 480px;
+            width: 90%;
+            animation: slideUp 0.3s;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: #8B949E;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #F0F6FC;
+        }
+
+        .wallet-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .wallet-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(41, 121, 255, 0.05);
+            border: 1px solid rgba(41, 121, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .wallet-option:hover {
+            background: rgba(41, 121, 255, 0.1);
+            border-color: #2979FF;
+            transform: translateX(4px);
+        }
+
+        .wallet-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: linear-gradient(135deg, #2979FF 0%, #1E5FD9 100%);
+        }
+
+        .wallet-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .wallet-info p {
+            font-size: 12px;
+            color: #8B949E;
         }
 
         /* CTA Section */
         .cta {
-            padding: 100px 24px;
+            padding: 120px 24px;
             background: linear-gradient(135deg, rgba(41, 121, 255, 0.1) 0%, rgba(30, 95, 217, 0.05) 100%);
-            border-top: 1px solid #30363D;
-            border-bottom: 1px solid #30363D;
+            border-top: 1px solid rgba(41, 121, 255, 0.2);
+            border-bottom: 1px solid rgba(41, 121, 255, 0.2);
+            position: relative;
         }
 
         .cta-container {
@@ -382,8 +661,9 @@
         /* Footer */
         .footer {
             padding: 60px 24px 40px;
-            background: #0D1117;
-            border-top: 1px solid #30363D;
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(41, 121, 255, 0.2);
         }
 
         .footer-container {
@@ -426,7 +706,7 @@
 
         .footer-bottom {
             padding-top: 32px;
-            border-top: 1px solid #30363D;
+            border-top: 1px solid rgba(41, 121, 255, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -447,8 +727,8 @@
         .social-link {
             width: 36px;
             height: 36px;
-            background: #161B22;
-            border: 1px solid #30363D;
+            background: rgba(41, 121, 255, 0.1);
+            border: 1px solid rgba(41, 121, 255, 0.2);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -461,7 +741,7 @@
         .social-link:hover {
             border-color: #2979FF;
             color: #2979FF;
-            background: rgba(41, 121, 255, 0.1);
+            background: rgba(41, 121, 255, 0.2);
         }
 
         /* Responsive */
@@ -497,6 +777,54 @@
     </style>
 </head>
 <body>
+    <!-- Video Background -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="hero-video_ZEl7oZjy.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
+    <!-- Wallet Modal -->
+    <div class="wallet-modal" id="walletModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Connect Wallet</h2>
+                <button class="close-btn" onclick="closeWalletModal()">&times;</button>
+            </div>
+            <div class="wallet-options">
+                <div class="wallet-option" onclick="connectMetaMask()">
+                    <div class="wallet-icon">🦊</div>
+                    <div class="wallet-info">
+                        <h3>MetaMask</h3>
+                        <p>Connect using MetaMask</p>
+                    </div>
+                </div>
+                <div class="wallet-option" onclick="connectWallet('WalletConnect')">
+                    <div class="wallet-icon">🔗</div>
+                    <div class="wallet-info">
+                        <h3>WalletConnect</h3>
+                        <p>Scan with WalletConnect</p>
+                    </div>
+                </div>
+                <div class="wallet-option" onclick="connectWallet('Coinbase')">
+                    <div class="wallet-icon">🔵</div>
+                    <div class="wallet-info">
+                        <h3>Coinbase Wallet</h3>
+                        <p>Connect using Coinbase</p>
+                    </div>
+                </div>
+                <div class="wallet-option" onclick="connectWallet('Trust')">
+                    <div class="wallet-icon">🛡️</div>
+                    <div class="wallet-info">
+                        <h3>Trust Wallet</h3>
+                        <p>Connect using Trust Wallet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-container">
@@ -511,12 +839,13 @@
                 <a href="#buy" class="nav-link">Buy</a>
                 <a href="#docs" class="nav-link">Docs</a>
             </nav>
-            <button class="connect-btn">Connect Wallet</button>
+            <button class="connect-btn" id="connectBtn" onclick="openWalletModal()">Connect Wallet</button>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-particles" id="particles"></div>
         <div class="hero-background"></div>
         <div class="hero-grid"></div>
         <div class="hero-container">
@@ -727,5 +1056,81 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Wallet Modal Functions
+        function openWalletModal() {
+            document.getElementById('walletModal').classList.add('active');
+        }
+
+        function closeWalletModal() {
+            document.getElementById('walletModal').classList.remove('active');
+        }
+
+        // MetaMask Connection
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    const account = accounts[0];
+                    const shortAddress = account.substring(0, 6) + '...' + account.substring(38);
+
+                    document.getElementById('connectBtn').textContent = shortAddress;
+                    document.getElementById('connectBtn').classList.add('connected');
+                    closeWalletModal();
+
+                    console.log('Connected:', account);
+                } catch (error) {
+                    console.error('User rejected connection:', error);
+                }
+            } else {
+                alert('Please install MetaMask to use this feature!\n\nVisit: https://metamask.io');
+            }
+        }
+
+        // Generic Wallet Connection (for other wallets)
+        function connectWallet(walletName) {
+            alert(`${walletName} integration coming soon!\n\nFor now, please use MetaMask.`);
+        }
+
+        // Close modal on outside click
+        document.getElementById('walletModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWalletModal();
+            }
+        });
+
+        // Initialize particles on load
+        window.addEventListener('load', createParticles);
+
+        // Listen for account changes
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                if (accounts.length === 0) {
+                    document.getElementById('connectBtn').textContent = 'Connect Wallet';
+                    document.getElementById('connectBtn').classList.remove('connected');
+                } else {
+                    const shortAddress = accounts[0].substring(0, 6) + '...' + accounts[0].substring(38);
+                    document.getElementById('connectBtn').textContent = shortAddress;
+                    document.getElementById('connectBtn').classList.add('connected');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
