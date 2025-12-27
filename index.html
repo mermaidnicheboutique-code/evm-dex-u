@@ -216,6 +216,40 @@
             100% { transform: translateY(50px); }
         }
 
+        .hero-robot {
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            opacity: 0.4;
+            pointer-events: none;
+            animation: float-robot 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(41, 121, 255, 0.6));
+            z-index: 0;
+        }
+
+        @keyframes float-robot {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-45%) translateX(-20px); }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-robot {
+                width: 350px;
+                height: 350px;
+                right: -100px;
+                opacity: 0.25;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-robot {
+                display: none;
+            }
+        }
+
         .hero-container {
             max-width: 1280px;
             margin: 0 auto;
@@ -848,6 +882,7 @@
         <div class="hero-particles" id="particles"></div>
         <div class="hero-background"></div>
         <div class="hero-grid"></div>
+        <img src="robot.png" alt="UltraX AI" class="hero-robot">
         <div class="hero-container">
             <h1 class="hero-title">
                 Trade Perpetuals with<br>
