@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraX - Decentralized Perpetual Exchange</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0D1117;
+            color: #F0F6FC;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(22, 27, 34, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #30363D;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #F0F6FC;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #2979FF 0%, #1E5FD9 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #8B949E;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #F0F6FC;
+        }
+
+        .connect-btn {
+            background: #2979FF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .connect-btn:hover {
+            background: #60A5FF;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(41, 121, 255, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 120px 24px 80px;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(41, 121, 255, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #F0F6FC 0%, #8B949E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, #2979FF 0%, #60A5FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: #8B949E;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #2979FF;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #60A5FF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(41, 121, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #F0F6FC;
+            border: 1px solid #30363D;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            border-color: #2979FF;
+            background: rgba(41, 121, 255, 0.1);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 60px 24px;
+            background: #161B22;
+            border-top: 1px solid #30363D;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .stats-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 24px;
+            background: rgba(41, 121, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(41, 121, 255, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #F0F6FC;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #8B949E;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: #10B981;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 24px;
+        }
+
+        .features-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #8B949E;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: #2979FF;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(41, 121, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #2979FF 0%, #1E5FD9 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #F0F6FC;
+        }
+
+        .feature-description {
+            font-size: 14px;
+            color: #8B949E;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .feature-list li {
+            font-size: 13px;
+            color: #8B949E;
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2979FF;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 24px;
+            background: linear-gradient(135deg, rgba(41, 121, 255, 0.1) 0%, rgba(30, 95, 217, 0.05) 100%);
+            border-top: 1px solid #30363D;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .cta-subtitle {
+            font-size: 18px;
+            color: #8B949E;
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 24px 40px;
+            background: #0D1117;
+            border-top: 1px solid #30363D;
+        }
+
+        .footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #F0F6FC;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #8B949E;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #2979FF;
+        }
+
+        .footer-bottom {
+            padding-top: 32px;
+            border-top: 1px solid #30363D;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            font-size: 14px;
+            color: #8B949E;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B949E;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            border-color: #2979FF;
+            color: #2979FF;
+            background: rgba(41, 121, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .cta-title {
+                font-size: 32px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">U</div>
+                <span>UltraX</span>
+            </div>
+            <nav class="nav">
+                <a href="#trade" class="nav-link">Trade</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#earn" class="nav-link">Earn</a>
+                <a href="#buy" class="nav-link">Buy</a>
+                <a href="#docs" class="nav-link">Docs</a>
+            </nav>
+            <button class="connect-btn">Connect Wallet</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-container">
+            <h1 class="hero-title">
+                Trade Perpetuals with<br>
+                <span class="highlight">100x Leverage</span>
+            </h1>
+            <p class="hero-subtitle">
+                Decentralized perpetual exchange on EVM networks. Trade BTC, ETH, and altcoins with deep liquidity, low fees, and zero slippage.
+            </p>
+            <div class="hero-cta">
+                <a href="#trade" class="btn-primary">Start Trading</a>
+                <a href="#features" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value">$2.3B+</div>
+                <div class="stat-label">Total Trading Volume</div>
+                <div class="stat-change">↑ 23% this month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">$5M+</div>
+                <div class="stat-label">Fees Distributed</div>
+                <div class="stat-change">↑ $423K last 24h</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔓</div>
+                <div class="stat-value">$4.3B</div>
+                <div class="stat-label">Open Interest</div>
+                <div class="stat-change">62% Long | 38% Short</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">1M+</div>
+                <div class="stat-label">Active Traders</div>
+                <div class="stat-change">↑ 12,547 active now</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <h2 class="section-title">Platform Features</h2>
+                <p class="section-subtitle">
+                    Everything you need for professional perpetual trading
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Perpetual Trading</h3>
+                    <p class="feature-description">
+                        Trade perpetual futures with up to 100x leverage on major cryptocurrencies.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Long and Short positions</li>
+                        <li>Real-time TradingView charts</li>
+                        <li>Stop-loss & Take-profit orders</li>
+                        <li>Liquidation protection</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3 class="feature-title">Liquidity Pools</h3>
+                    <p class="feature-description">
+                        Provide liquidity and earn fees from every trade on the platform.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Multi-asset pools</li>
+                        <li>Automated rebalancing</li>
+                        <li>70% fee distribution</li>
+                        <li>Impermanent loss protection</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌾</div>
+                    <h3 class="feature-title">Staking & Farming</h3>
+                    <p class="feature-description">
+                        Stake UTX and ULP tokens to earn rewards and participate in governance.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Flexible staking periods</li>
+                        <li>Compound rewards automatically</li>
+                        <li>esUTX reward tokens</li>
+                        <li>Governance voting rights</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">AMM Integration</h3>
+                    <p class="feature-description">
+                        Automated Market Maker ensures deep liquidity and minimal slippage.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Zero-slippage swaps</li>
+                        <li>Multi-chain liquidity</li>
+                        <li>Price impact protection</li>
+                        <li>MEV protection built-in</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure & Non-Custodial</h3>
+                    <p class="feature-description">
+                        Your keys, your crypto. Trade directly from your wallet with full control.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Audited smart contracts</li>
+                        <li>Non-custodial architecture</li>
+                        <li>Multi-sig security</li>
+                        <li>No KYC required</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Multi-Chain Support</h3>
+                    <p class="feature-description">
+                        Trade across multiple EVM-compatible networks with unified liquidity.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Ethereum mainnet</li>
+                        <li>Arbitrum & Optimism</li>
+                        <li>Polygon & BSC</li>
+                        <li>Cross-chain bridges</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-container">
+            <h2 class="cta-title">Ready to Start Trading?</h2>
+            <p class="cta-subtitle">
+                Join thousands of traders on the most advanced decentralized perpetual exchange
+            </p>
+            <div class="hero-cta">
+                <a href="#trade" class="btn-primary">Launch App</a>
+                <a href="#docs" class="btn-secondary">Read Documentation</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#trade">Trade</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#earn">Earn</a></li>
+                        <li><a href="#buy">Buy Tokens</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#docs">Documentation</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#tutorials">Tutorials</a></li>
+                        <li><a href="#api">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="#twitter">Twitter</a></li>
+                        <li><a href="#discord">Discord</a></li>
+                        <li><a href="#telegram">Telegram</a></li>
+                        <li><a href="#github">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#audits">Audits</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 UltraX. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">𝕏</a>
+                    <a href="#" class="social-link">D</a>
+                    <a href="#" class="social-link">T</a>
+                    <a href="#" class="social-link">G</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
