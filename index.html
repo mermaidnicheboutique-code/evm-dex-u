@@ -1226,12 +1226,12 @@
                 <a href="#docs" class="nav-link">Docs</a>
             </nav>
             <div style="display: flex; align-items: center;">
-                <div class="language-selector">
-                    <button class="language-btn" onclick="toggleLanguageMenu()">
+                <div class="language-selector notranslate">
+                    <button class="language-btn notranslate" onclick="toggleLanguageMenu()">
                         🌐 <span id="currentLang">EN</span>
                     </button>
-                    <div class="language-dropdown" id="languageDropdown">
-                        <div class="language-option selected" onclick="changeLanguage('en', 'EN')">🇺🇸 English</div>
+                    <div class="language-dropdown notranslate" id="languageDropdown">
+                        <div class="language-option selected notranslate" onclick="resetToEnglish()">🇺🇸 English (Reset)</div>
                         <div class="language-option" onclick="changeLanguage('es', 'ES')">🇪🇸 Español</div>
                         <div class="language-option" onclick="changeLanguage('zh', 'CN')">🇨🇳 中文</div>
                         <div class="language-option" onclick="changeLanguage('ja', 'JP')">🇯🇵 日本語</div>
@@ -1769,6 +1769,25 @@
         function toggleLanguageMenu() {
             const dropdown = document.getElementById('languageDropdown');
             dropdown.classList.toggle('active');
+        }
+
+        function resetToEnglish() {
+            console.log('🔄 Resetting to English...');
+
+            // Update display
+            document.getElementById('currentLang').textContent = 'EN';
+
+            // Clear Google Translate cookies
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname;
+
+            // Close dropdown
+            document.getElementById('languageDropdown').classList.remove('active');
+
+            // Remove translation from URL and reload
+            const url = window.location.href.split('#')[0];
+            window.location.href = url;
+            window.location.reload();
         }
 
         function changeLanguage(langCode, displayCode) {
