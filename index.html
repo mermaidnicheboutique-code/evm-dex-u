@@ -1103,9 +1103,41 @@
             }
         }
 
+        // Coinbase Wallet Connection
+        async function connectCoinbaseWallet() {
+            // Check if Coinbase Wallet is installed
+            if (window.ethereum && window.ethereum.isCoinbaseWallet) {
+                try {
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    const account = accounts[0];
+                    const shortAddress = account.substring(0, 6) + '...' + account.substring(38);
+
+                    document.getElementById('connectBtn').textContent = shortAddress + ' (CB)';
+                    document.getElementById('connectBtn').classList.add('connected');
+                    closeWalletModal();
+
+                    console.log('Connected to Coinbase Wallet:', account);
+                } catch (error) {
+                    console.error('User rejected connection:', error);
+                }
+            } else {
+                // If not installed, show download link
+                const install = confirm('Coinbase Wallet not detected!\n\nWould you like to download it?');
+                if (install) {
+                    window.open('https://www.coinbase.com/wallet', '_blank');
+                }
+            }
+        }
+
         // Generic Wallet Connection (for other wallets)
         function connectWallet(walletName) {
-            alert(`${walletName} integration coming soon!\n\nFor now, please use MetaMask.`);
+            if (walletName === 'Coinbase') {
+                connectCoinbaseWallet();
+            } else {
+                alert(`${walletName} integration coming soon!\n\nFor now, please use MetaMask or Coinbase Wallet.`);
+            }
         }
 
         // Close modal on outside click
