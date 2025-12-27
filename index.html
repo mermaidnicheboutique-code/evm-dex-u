@@ -1523,19 +1523,20 @@
 
         // Dashboard Functions
         function viewDashboard() {
+            // Always show dashboard (demo mode)
+            document.getElementById('dashboardModal').classList.add('active');
+
             // Check if wallet is connected
             const connectBtn = document.getElementById('connectBtn');
             const isConnected = connectBtn.classList.contains('connected');
 
             if (isConnected) {
-                // Show dashboard
-                document.getElementById('dashboardModal').classList.add('active');
                 // Update wallet address in dashboard
                 const walletAddress = connectBtn.textContent.replace(' (CB)', '');
                 document.getElementById('dashboardWalletAddress').textContent = walletAddress;
             } else {
-                // Open wallet modal if not connected
-                openWalletModal();
+                // Show demo mode message
+                document.getElementById('dashboardWalletAddress').textContent = 'Demo Mode - Connect wallet to see your data';
             }
         }
 
